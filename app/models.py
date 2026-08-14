@@ -4,7 +4,7 @@ from datetime import datetime
 from .database import Base
 
 class User(Base):
-    _tablename_ = "users"
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50), unique=True, index=True, nullable=False)
@@ -19,7 +19,7 @@ class User(Base):
     gifts_sent = relationship("GiftTransaction", foreign_keys="GiftTransaction.sender_id")
 
 class Room(Base):
-    _tablename_ = "rooms"
+    __tablename__ = "rooms"
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(100), nullable=False)
@@ -32,7 +32,7 @@ class Room(Base):
     host = relationship("User", back_populates="rooms")
 
 class Gift(Base):
-    _tablename_ = "gifts"
+    __tablename__ = "gifts"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50), nullable=False)
@@ -40,7 +40,7 @@ class Gift(Base):
     image_url = Column(String(255), default="")
 
 class GiftTransaction(Base):
-    _tablename_ = "gift_transactions"
+    __tablename__ = "gift_transactions"
 
     id = Column(Integer, primary_key=True, index=True)
     sender_id = Column(Integer, ForeignKey("users.id"))
