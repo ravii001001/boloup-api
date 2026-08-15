@@ -1,78 +1,47 @@
 import time
 import secrets
 
-class BoloUpProAuthSimulator:
-    def _init_(self):
-        # Simulating a backend user database
-        self.registered_users = {
-            "rabin2808644@gmail.com": {"user_id": "4123538", "status": "Active", "profile": "Pro_User"}
-        }
-        # In-memory storage for active verification tokens
-        self.active_otps = {}
+# 1. This is your simulated user database
+database = {
+    "test@gmail.com": {"user_id": "992811", "status": "Active"},
+    "admin@gmail.com": {"user_id": "000001", "status": "Active"}
+}
 
-    def request_otp_link(self, email):
-        """Step 1: User inputs email to request a passwordless token."""
-        print(f"\n[System] Checking database for: {email}...")
-        
-        if email not in self.registered_users:
-            print("[Error] Email address not registered on BoloUp Pro.")
-            return False
-            
-        # Generate a secure 6-digit verification code
-        otp_code = str(secrets.randbelow(900000) + 100000)
-        # Set expiration timestamp (e.g., valid for 2 minutes)
-        expiration = time.time() + 120 
-        
-        self.active_otps[email] = {"code": otp_code, "expires_at": expiration}
-        
-        print(f"[Email Server] Outgoing message sent to {email} successfully!")
-        print(f"-------- EMAIL INBOX SIMULATION --------")
-        print(f"Subject: Your BoloUp Pro Verification Code")
-        print(f"Your secure one-time login code is: {otp_code}")
-        print(f"----------------------------------------")
-        return True
+active_otps = {}
 
-    def verify_login(self, email, input_code):
-        """Step 2: User inputs the received code to finalize authentication."""
-        if email not in self.active_otps:
-            print("[Error] No login session initiated for this email.")
-            return False
-            
-        auth_data = self.active_otps[email]
-        
-        # Check if token has expired
-        if time.time() > auth_data["expires_at"]:
-            print("[Error] Verification code has expired. Please request a new one.")
-            del self.active_otps[email]
-            return False
-            
-        # Validate input code
-        if input_code == auth_data["code"]:
-            user_info = self.registered_users[email]
-            print("\n========================================")
-            print("🎉 LOGIN SUCCESSFUL (No Password Used)")
-            print(f"Welcome back! BoloUp ID: {user_info['user_id']}")
-            print(f"Account Profile Type: {user_info['profile']}")
-            print("========================================")
-            # Clear used code from active memory
-            del self.active_otps[email]
-            return True
-        else:
-            print("[Error] Invalid verification code. Please check your spelling.")
-            return False
+print("\n==========================================")
+print("     BoloUp Pro Passwordless Login Flow   ")
+print("==========================================\n")
 
-# --- Running the Automation Flow ---
-if __name__ == "_main_":
-    auth_system = BoloUpProAuthSimulator()
+# 2. The script will now explicitly ask you to type your email
+user_email = input("Step 1: Enter your email address to log in: ").strip()
+
+# 3. Check if the email exists in our simulation database
+if user_email not in database:
+    print(f"\n[Error] '{user_email}' is not found in the database.")
+    print("-> Tip: Try logging in with 'test@gmail.com' to see it work!")
+else:
+    # 4. Generate a secure 6-digit login token
+    generated_code = str(secrets.randbelow(900000) + 100000)
+    active_otps[user_email] = generated_code
     
-    # 1. Provide your registered email address
-    my_email = "rabin246808644@gmail.com" 
-    
-    # 2. Trigger the code request sequence
-    if auth_system.request_otp_link(my_email):
-        
-        # 3. Simulate user typing code directly from their email inbox
-        user_otp_input = input("\nEnter the 6-digit code displayed in your email inbox above: ")
-        
-        # 4. Verify code integrity to gain system access
-        auth_system.verify_login(my_email, user_otp_input)
+    print(f"\n[System] Checking email records for {user_email}...")
+    print(f"[Email Server] Verification token sent successfully!")
+    print(f"------------ EMAIL INBOX SIMULATION ------------")
+    print(f"Subject: Your BoloUp Pro Verification Code")
+    print(f"Your secure one-time login code is: {generated_code}")
+    print(f"------------------------------------------------")
+
+    # 5. The script pauses here and waits for your input
+    user_input_code = input("\nStep 2: Enter the 6-digit code displayed above: ").strip()
+
+    # 6. Verify if the code matches
+    if user_input_code == active_otps[user_email]:
+        account_details = database[user_email]
+        print("\n========================================")
+        print("🎉 LOGIN SUCCESSFUL (No Password Used)")
+        print(f"Welcome back! BoloUp ID: {account_details['user_id']}")
+        print(f"Account Status: {account_details['status']}")
+        print("========================================")
+    else:
+        print("\n[Error] Invalid verification code. Login failed.")
