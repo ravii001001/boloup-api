@@ -20,8 +20,8 @@ ONLINE_HOURS = 24
 class BoloUpClient:
     def __init__(self):
         self.token = None
-        self.user_id = None
-        self.username = None
+        self.user_id = "4123538"
+        self.username = "rabin246808644@gmail.com"
         self.login_id = None          # username or email
         self.password = None
 
