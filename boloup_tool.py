@@ -125,6 +125,7 @@ class BoloUpClient:
         login_id = input("Username or Email: ").strip()
 
         if not self.login(login_id,password):
+            self.password()
             sys.exit(1)
 
         while True:
