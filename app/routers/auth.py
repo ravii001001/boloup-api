@@ -16,7 +16,11 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Email already registered")
 
     hashed = auth.get_password_hash(user.password)
-    db_user = models.User(username=user.username, email=user.email, hashed_password=hashed)
+    db_user = models.User(
+        username=user.username,
+        email=user.email,
+        hashed_password=hashed
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -24,9 +28,14 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=schemas.Token)
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.username == form_data.username).first()
+    # Username OR Email duitai support
+    user = db.query(models.User).filter(
+        (models.User.username == form_data.username) | 
+        (models.User.email == form_data.username)
+    ).first()
+
     if not user or not auth.verify_password(form_data.password, user.hashed_password):
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
+        raise HTTPException(status_code=400, detail="Incorrect username/email or password")
 
     access_token = auth.create_access_token(
         data={"sub": user.username},
