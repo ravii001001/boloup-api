@@ -5,7 +5,7 @@ class BoloUpProAuthSimulator:
     def _init_(self):
         # Simulating a backend user database
         self.registered_users = {
-            "rabin246808644@gmail.com": {"user_id": "4123538", "status": "Active", "profile": "Pro_User"}
+            "rabin2808644@gmail.com": {"user_id": "4123538", "status": "Active", "profile": "Pro_User"}
         }
         # In-memory storage for active verification tokens
         self.active_otps = {}
