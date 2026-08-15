@@ -160,6 +160,6 @@ class BoloUpClient:
             else:
                 print("Invalid choice")
 
-if _name_ == "_main_":
+if __name__ == "_main_":
     client = BoloUpClient()
     client.run()
