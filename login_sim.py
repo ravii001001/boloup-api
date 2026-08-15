@@ -62,7 +62,7 @@ class BoloUpProAuthSimulator:
             return False
 
 # --- Running the Automation Flow ---
-if _name_ == "_main_":
+if __name__ == "_main_":
     auth_system = BoloUpProAuthSimulator()
     
     # 1. Provide your registered email address
