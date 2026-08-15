@@ -18,7 +18,7 @@ ONLINE_HOURS = 24
 # ====================================================
 
 class BoloUpClient:
-    def _init_(self):
+    def __init__(self):
         self.token = None
         self.user_id = None
         self.username = None
@@ -160,6 +160,6 @@ class BoloUpClient:
             else:
                 print("Invalid choice")
 
-if __name__ == "_main_":
+if __name__ == "__main__":
     client = BoloUpClient()
     client.run()
