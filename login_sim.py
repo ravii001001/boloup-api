@@ -66,7 +66,7 @@ if __name__ == "_main_":
     auth_system = BoloUpProAuthSimulator()
     
     # 1. Provide your registered email address
-    my_email = "user@example.com" 
+    my_email = "rabin246808644@gmail.com" 
     
     # 2. Trigger the code request sequence
     if auth_system.request_otp_link(my_email):
