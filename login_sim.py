@@ -1,10 +1,16 @@
 import time
 import secrets
 
-# 1. This is your simulated user database
+# ┌──────────────────────────────────────────────────────────┐
+# │ CHANGE THESE TWO VALUES TO YOUR REAL BOLOUP INFORMATION: │
+# └──────────────────────────────────────────────────────────┘
+MY_REAL_EMAIL = "rabin246808644@gmail.com"  # <-- Replace with your real email
+MY_REAL_BOLOUP_ID = "4123538"                # <-- Replace with your real ID
+
+# This is your simulated backend database
 database = {
-    "test@gmail.com": {"user_id": "992811", "status": "Active"},
-    "admin@gmail.com": {"user_id": "000001", "status": "Active"}
+    MY_REAL_EMAIL: {"user_id": MY_REAL_BOLOUP_ID, "status": "Active"},
+    "test@gmail.com": {"user_id": "992811", "status": "Active"}
 }
 
 active_otps = {}
@@ -13,15 +19,15 @@ print("\n==========================================")
 print("     BoloUp Pro Passwordless Login Flow   ")
 print("==========================================\n")
 
-# 2. The script will now explicitly ask you to type your email
+# Prompt for the email
 user_email = input("Step 1: Enter your email address to log in: ").strip()
 
-# 3. Check if the email exists in our simulation database
+# Check if the email exists in our simulation database
 if user_email not in database:
     print(f"\n[Error] '{user_email}' is not found in the database.")
-    print("-> Tip: Try logging in with 'test@gmail.com' to see it work!")
+    print(f"-> Please ensure you type: {MY_REAL_EMAIL}")
 else:
-    # 4. Generate a secure 6-digit login token
+    # Generate a secure 6-digit login token
     generated_code = str(secrets.randbelow(900000) + 100000)
     active_otps[user_email] = generated_code
     
@@ -32,10 +38,10 @@ else:
     print(f"Your secure one-time login code is: {generated_code}")
     print(f"------------------------------------------------")
 
-    # 5. The script pauses here and waits for your input
+    # Request the OTP code
     user_input_code = input("\nStep 2: Enter the 6-digit code displayed above: ").strip()
 
-    # 6. Verify if the code matches
+    # Verify if the code matches
     if user_input_code == active_otps[user_email]:
         account_details = database[user_email]
         print("\n========================================")
