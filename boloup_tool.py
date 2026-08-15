@@ -38,7 +38,6 @@ class BoloUpClient:
             if r.status_code == 200:
                 self.token = r.json()["access_token"]
                 self.login_id = login_id
-                self.password = password
                 self._get_me()
                 print(f"✅ Login successful!")
                 print(f"   User ID  : {self.user_id}")
